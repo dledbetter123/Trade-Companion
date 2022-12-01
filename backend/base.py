@@ -80,7 +80,28 @@ def predict_close():
     model = joblib.load("stock_price_prediction_model.ml")
     lst = generate_prediction(close, model)
     lst = scaler.inverse_transform(lst)
-    print(lst[:5])
-    return str(lst[:5])
+    lst = lst.reshape(-1,).tolist()
+    # print(close_prices)
 
+    close=scaler.inverse_transform(close)
+    # print(lst[:5])
+    vals = {
+        "base": np.array(close_prices).tolist(),
+        "prediction": lst,
+        "size": len(close_prices) + len(lst),
+        "all": np.array(close_prices).tolist() + lst
+    }
+    return vals
+
+@app.route('/profile')
+def my_profile():
+    response_body = {
+        "name": "David",
+        "about" :"Hello! I'm a full stack developer that loves python and javascript"
+    }
+
+    return response_body
+
+
+# app.run(host="localhost", port=8080, debug=True)
 app.run()
