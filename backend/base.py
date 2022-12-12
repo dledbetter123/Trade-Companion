@@ -14,13 +14,11 @@ CORS(app)
 def generate_prediction(X, model, days_in_future=30, days_in_past=100):
     from numpy import array
 
-    if (days_in_future > 30):
-        days_in_future = 30
+    if (days_in_future > 90):
+        days_in_future = 90
 
-
-
-    if (days_in_past > 200):
-        days_in_past = 200
+    if (days_in_past > 500):
+        days_in_past = 500
 
     x_input=X[-days_in_past:].reshape(1,-1)
     x_input.shape
@@ -78,17 +76,22 @@ def predict_close():
     close=scaler.fit_transform(np.array(close_prices).reshape(-1,1))
 
     model = joblib.load("stock_price_prediction_model.ml")
-    lst = generate_prediction(close, model)
+    lst = generate_prediction(close, model, days_in_future=90)
     lst = scaler.inverse_transform(lst)
     lst = lst.reshape(-1,).tolist()
     # print(close_prices)
 
     close=scaler.inverse_transform(close)
+    X_base = [_ for _ in range(len(close_prices))]
+    X_pred = [i + len(close_prices) for i in range(len(lst))]
+    # X_pred = [0 for _ in range(len(close_prices))] + X_pred
+    print(X_pred)
     # print(lst[:5])
     vals = {
         "base": np.array(close_prices).tolist(),
         "prediction": lst,
-        "size": len(close_prices) + len(lst),
+        "bplot_x": X_base,
+        "pplot_x": X_pred,
         "all": np.array(close_prices).tolist() + lst
     }
     return vals

@@ -18,7 +18,7 @@
   },
   "scripts": {
     "start": "react-scripts start",
-    "start-backend": "cd backend && python base.py",
+    "start-backend": "source ~/miniconda/bin/activate tf && cd backend && python base.py",
     "build": "react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject"

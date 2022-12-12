@@ -7,6 +7,22 @@ import Plot from 'react-plotly.js';
 
 function App() {
 
+  // var dateRange = function(startDate, endDate, steps = 1) {
+  //   const dateArray = [];
+  //   let currentDate = new Date(startDate);
+  
+  //   while (currentDate <= new Date(endDate)) {
+  //     dateArray.push(new Date(currentDate));
+  //     // Use UTC date to prevent problems with time zones and DST
+  //     currentDate.setUTCDate(currentDate.getUTCDate() + steps);
+  //   }
+  
+  //   return dateArray;
+  // };
+  
+  // const dates = dateRange('2020-09-27', '2020-10-28');
+  // console.log(dates);
+
   const [profileData, setProfileData] = useState(null)
   const [predictData, setPredictData] = useState(null)
 
@@ -38,7 +54,8 @@ function App() {
         setPredictData(({
           base: res.base,
           predict: res.prediction,
-          size: res.size,
+          Xb: res.bplot_x,
+          Xp: res.pplot_x,
           all: res.all
         }))
       }).catch((error) => {
@@ -58,14 +75,23 @@ function App() {
         <Plot
           data={[
             {
-              x: [...Array(predictData.size).keys()],
+              x: predictData.Xb,
               y: predictData.all,
               type: 'scatter',
               mode: 'lines',
               marker: {color: 'red'},
+              name: "APPL"
             },
+            {
+              x: predictData.Xp,
+              y: predictData.predict,
+              type: 'scatter',
+              mode: 'lines',
+              marker: {color: 'green'},
+              name: "APPL "+String(predictData.Xp.length)
+            }
           ]}
-          layout={ {width: 1000, height: 480, title: 'Plot'} }
+          layout={ {width: 1000, height: 480, title: 'APPL', paper_bgcolor: "black", plot_bgcolor:"black"} }
         />
       </div>
       }
