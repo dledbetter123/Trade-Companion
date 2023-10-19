@@ -6,7 +6,7 @@ import './App.css';
 import Plot from 'react-plotly.js';
 
 function App() {
-
+  
   // var dateRange = function(startDate, endDate, steps = 1) {
   //   const dateArray = [];
   //   let currentDate = new Date(startDate);
